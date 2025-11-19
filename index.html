@@ -42,7 +42,7 @@
 
     <div class="section">
       <h2><img class="icon" src="https://img.icons8.com/emoji/48/calendar-emoji.png"/> Date</h2>
-      <p>19 November 2025</p>
+      <p>20 November 2025</p>
     </div>
 
     <div class="section">
@@ -118,7 +118,7 @@
 </div>
 
 <script>
-// === JavaScript moved to bottom so elements exist ===
+// === Chalk sound ===
 const chalkSound = new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_6d6318b1b1.mp3?filename=chalk-on-blackboard-6873.mp3");
 
 // === Memo lock setup ===
@@ -130,9 +130,9 @@ function lockMemos() {
   memoIds.forEach(id => {
     const el = document.getElementById(id);
     if (el) {
-      el.dataset.locked = "true";
-      el.style.display = "none";
-      el.classList.remove("show");
+      el.dataset.locked = 'true';
+      el.style.display = 'none';
+      el.classList.remove('show');
     }
   });
 }
@@ -141,69 +141,94 @@ function unlockMemos() {
   memoIds.forEach(id => {
     const el = document.getElementById(id);
     if (el) {
-      el.dataset.locked = "false";
+      el.dataset.locked = 'false';
     }
   });
   memoUnlocked = true;
+  const timer = document.getElementById('timeRemaining');
+  if (timer) timer.textContent = 'UNLOCKED';
 }
 
 function toggleBox(id) {
   const box = document.getElementById(id);
   if (!box) return;
 
-  if (box.dataset.locked === "true" && !memoUnlocked) {
+  const isLocked = box.dataset && box.dataset.locked === 'true';
+  if (isLocked && !memoUnlocked) {
     alert('Answers are locked until 20 Nov 2025 at 16:00. Ask your teacher.');
     return;
   }
 
-  if (box.classList.contains("show")) {
-    box.classList.remove("show");
-    setTimeout(() => (box.style.display = "none"), 500);
+  if (box.classList.contains('show')) {
+    box.classList.remove('show');
+    setTimeout(() => (box.style.display = 'none'), 500);
   } else {
-    box.style.display = "block";
-    setTimeout(() => box.classList.add("show"), 10);
+    box.style.display = 'block';
+    setTimeout(() => box.classList.add('show'), 10);
     chalkSound.currentTime = 0;
     chalkSound.play().catch(() => {});
     box.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 }
 
+// === Countdown timer ===
 function updateCountdown() {
   const now = new Date();
   const timer = document.getElementById('timeRemaining');
   if (!timer) return;
+  if (memoUnlocked) {
+    timer.textContent = 'UNLOCKED';
+    return;
+  }
   const diff = releaseTime - now;
   if (diff <= 0) {
     timer.textContent = '00:00:00';
     return;
   }
-  const hrs = String(Math.floor(diff / (1000*60*60))).padStart(2,'0');
-  const mins = String(Math.floor((diff % (1000*60*60))/(1000*60))).padStart(2,'0');
-  const secs = String(Math.floor((diff % (1000*60))/1000)).padStart(2,'0');
+  const hrs = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
+  const mins = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+  const secs = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
   timer.textContent = `${hrs}:${mins}:${secs}`;
 }
 
+// === Time-based release check ===
 function checkRelease() {
   const now = new Date();
   if (!memoUnlocked && now >= releaseTime) {
-    openPW() to unlock memo:');
-    if (pass === 'Joshu@2025') {
-      unlockMemos();
-      alert('Memo unlocked.');
-    } else {
-      alert('Incorrect password.');
-    }
+    openPW();
   }
 }
 
-function teacherBypass() { openPW(); }rd');
+// === Teacher unlock modal ===
+function openPW() {
+  const modal = document.getElementById('pwModal');
+  if (modal) modal.style.display = 'flex';
+}
+
+function closePW() {
+  const modal = document.getElementById('pwModal');
+  const input = document.getElementById('pwInput');
+  if (modal) modal.style.display = 'none';
+  if (input) input.value = '';
+}
+
+function submitPW() {
+  const input = document.getElementById('pwInput');
+  const pw = input ? input.value : '';
+  if (pw === 'Joshu@2025') {
+    unlockMemos();
+    closePW();
+    alert('Memo unlocked for teacher.');
+  } else {
+    alert('Incorrect password');
   }
 }
 
-function openPW(){ document.getElementById('pwModal').style.display='flex'; }
-function closePW(){ document.getElementById('pwModal').style.display='none'; document.getElementById('pwInput').value=''; }
-function submitPW(){ const pw=document.getElementById('pwInput').value; if(pw==='Joshu@2025'){ unlockMemos(); closePW(); alert('Memo unlocked for teacher.'); } else { alert('Incorrect password'); }}
+function teacherBypass() {
+  openPW();
+}
 
+// === Initialise on load ===
 window.addEventListener('load', () => {
   lockMemos();
   updateCountdown();
