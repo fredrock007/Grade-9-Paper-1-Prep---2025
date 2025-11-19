@@ -1,240 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>The Photoshop Effect – Whiteboard</title>
-  <style>
-    body { background: #dcdcdc; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 50px; }
-    .whiteboard { width: 960px; background: #ffffff; border: 30px solid #c0c0c0; border-radius: 12px; box-shadow: 20px 20px 40px rgba(0,0,0,0.6); padding: 40px; transform: perspective(1000px) rotateX(1deg); position: relative; }
-    .section { margin-bottom: 40px; border-bottom: 6px solid black; padding-bottom: 15px; }
-    h2 { color: #0074a8; display: flex; align-items: center; gap: 10px; }
-    .icon { width: 28px; height: 28px; }
-    p, li { font-size: 16px; line-height: 1.6; color: #333; }
-    ul { padding-left: 20px; }
-    .hint { font-size: 13px; color: #555; margin-top: 8px; font-style: italic; }
-    .highlight-yellow { background-color: #fff89a; }
-    .highlight-blue { background-color: #a7e0ff; }
-    .highlight-green { background-color: #b4f8c8; }
-    .highlight-pink { background-color: #ffc6ff; }
-    .highlight-orange { background-color: #ffd6a5; }
-    .highlight-yellow, .highlight-blue, .highlight-green, .highlight-pink, .highlight-orange { cursor: pointer; border-radius: 4px; padding: 2px 4px; }
-    .button { display: inline-block; padding: 10px 20px; background-color: #005b96; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 15px; transition: transform 0.2s ease, background-color 0.2s ease; }
-    .button:hover { transform: scale(1.05); background-color: #0090d1; }
-    .dialogue-box { position: fixed; top: 50px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.95); backdrop-filter: blur(5px); padding: 30px; border: 2px solid #0074a8; border-radius: 12px; max-width: 600px; z-index: 1000; opacity: 0; transition: opacity 0.5s ease-in-out; display: none; }
-    .dialogue-box.show { display: block; opacity: 1; }
-    .close-btn { float: right; cursor: pointer; font-size: 18px; color: #444; background: #eee; padding: 4px 10px; border-radius: 6px; margin-top: -10px; }
-    @media (max-width: 768px) { .whiteboard { width: 90%; padding: 20px; border-width: 15px; } p, li { font-size: 14px; } }
-  </style>
-  
+<meta charset="UTF-8" />
+<title>Grade 9 Exam Preparation – Whiteboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+body { background:#dcdcdc; font-family:'Segoe UI', system-ui, Arial, sans-serif; display:flex; justify-content:center; padding:16px; }
+.whiteboard { width:min(960px, 100%); background:#fff; border:24px solid #c0c0c0; border-radius:12px; box-shadow:20px 20px 40px rgba(0,0,0,.6); padding:24px; }
+.section { margin-bottom:28px; border-bottom:6px solid #000; padding-bottom:12px; }
+h2 { color:#0074a8; display:flex; align-items:center; gap:10px; margin:0 0 8px; }
+p, li { font-size:16px; line-height:1.6; color:#333; }
+.text-toggle { cursor:pointer; color:#0074a8; font-weight:600; margin-top:8px; }
+.text-box { background:#f7f7f7; border:1px solid #aaa; border-radius:8px; padding:12px; height:230px; overflow-y:auto; display:none; }
+.answer-box { background:#e1ffe1; border-left:4px solid #28a745; padding:10px 14px; border-radius:6px; margin-top:6px; display:none; }
+.reveal-btn { background:#0074a8; color:white; padding:8px 14px; border:none; border-radius:6px; cursor:pointer; margin-top:12px; }
+</style>
+<style>
+.question-toggle { cursor:pointer; color:#0074a8; font-weight:700; }
+</style>
 </head>
 <body>
-  <div class="whiteboard">
+<div class="whiteboard">
 
-    <!-- Countdown Timer Display -->
-    <div id="countdown" style="font-size:20px; font-weight:bold; color:#d9534f; margin-bottom:20px;">
-      Memo unlocks in: <span id="timeRemaining"></span>
-    </div>
+<div class="section">
+<h2>📅 Date</h2>
+<p id="dateSAST"></p>
+</div>
 
-    <!-- Teacher Bypass Button -->
-    <button onclick="teacherBypass()" style="position:fixed; top:20px; right:40px; z-index:5000; padding:12px 18px; background:#222; color:white; border:none; border-radius:8px; cursor:pointer; pointer-events:auto;">
-      🔑 Teacher Unlock
-    </button>
+<div class="section">
+<h2>📘 Topic</h2>
+<p>Grade 9 Exam Preparation – Comprehension + Memo Integration</p>
+</div>
 
-    <div class="section">
-      <h2><img class="icon" src="https://img.icons8.com/emoji/48/calendar-emoji.png"/> Date</h2>
-      <p>20 November 2025</p>
-    </div>
+<div class="section">
+<h2>🎯 Lesson Objectives</h2>
+<ol>
+<li>Interpret an unseen comprehension text.</li>
+<li>Answer questions using evidence and own words.</li>
+<li>Check and understand memo answers for improvement.</li>
+</ol>
+</div>
 
-    <div class="section">
-      <h2><img class="icon" src="https://img.icons8.com/emoji/48/open-book-emoji.png"/> Topic</h2>
-      <p>Comprehension: <em>“The Photoshop Effect on Teen Self-Esteem”</em> (Grade 9 Exam Practice)</p>
-    </div>
+<div class="section">
+<h2>📄 Exam Text</h2>
+<p>Open the Grade 9 Comprehension Exam below:</p>
+<a id="examLink" href="https://raw.githubusercontent.com/fredrock007/Grade-9-Paper-1-Prep---2025/main/ENGL%20HL%20P2%20GR9%20QP%20NOV2019%20D.pdf" target="_blank" style="display:inline-block;margin-bottom:12px;text-decoration:none;">
+  <img src="https://raw.githubusercontent.com/fredrock007/placeholder/main/thumbnail.png" style="width:200px;border:2px solid #0074a8;border-radius:8px;cursor:pointer;" />
+</a>
+<iframe id="examFrame" src="https://mozilla.github.io/pdf.js/web/viewer.html?file=https://raw.githubusercontent.com/fredrock007/Grade-9-Paper-1-Prep---2025/main/ENGL%20HL%20P2%20GR9%20QP%20NOV2019%20D.pdf" style="width:100%;height:600px;border:2px solid #0074a8;border-radius:8px;"></iframe>
+</div>
 
-    <div class="section">
-      <h2><img class="icon" src="https://img.icons8.com/color/48/goals--v1.png"/> Lesson Objectives</h2>
-      <ul>
-        <li>Understand the main ideas in a passage about media, body image and teen self-esteem.</li>
-        <li>Answer exam-style comprehension questions using your <span class="highlight-yellow" onclick="toggleBox('objOwnWords')">own words</span>.</li>
-        <li>Explain the difference between <span class="highlight-blue" onclick="toggleBox('objLowHigh')">low and high self-esteem</span>.</li>
-        <li>Identify whether a statement is a <span class="highlight-pink" onclick="toggleBox('objFactOpinion')">fact or an opinion</span>.</li>
-      </ul>
-    </div>
+<div class="section">
+<h2>❓ Do It — Questions</h2>
+<ol id="questionList">
+<li><strong>Q1.1</strong> Describe the effect magazines and advertising have on teenagers. Use your own words.<div class="answer-box" id="ans-1-1">They have a negative effect / make teens feel ugly. fileciteturn4file0</div></li>
+<li><strong>Q1.2</strong> What do teenagers do in order to look like the pictures in the magazines?<div class="answer-box" id="ans-1-2">They hurt/harm themselves. fileciteturn4file0</div></li>
+<li><strong>Q1.3</strong> List TWO feelings that exposure to super-thin models can cause in teenagers.<div class="answer-box" id="ans-1-3">Stress, depression, shame, guilt, body‑dissatisfaction (any TWO). fileciteturn4file0</div></li>
+<li><strong>Q1.4.1</strong> Teens are struggling to accept their less-than-perfect bodies because of ... (multiple choice)<div class="answer-box" id="ans-1-4-1">Advances in technology and rise of mass media. fileciteturn4file0</div></li>
+<li><strong>Q1.4.2</strong> Meaning of the phrase “let alone attainable”.<div class="answer-box" id="ans-1-4-2">It means “to be unable to do”. fileciteturn4file0</div></li>
+<li><strong>Q1.5</strong> Describe “digital alteration or image manipulation” in your own words.<div class="answer-box" id="ans-1-5">Changing/altering a picture to make someone look better/thinner. fileciteturn4file0</div></li>
+<li><strong>Q1.6</strong> True/False with FIVE consecutive words quoted.<div class="answer-box" id="ans-1-6">False. Quote: “it is used for everything”. fileciteturn4file0</div></li>
+<li><strong>Q1.7</strong> Name ONE feeling created by exposure to negative media.<div class="answer-box" id="ans-1-7">Incompetent / unlovable / inadequate (any ONE). fileciteturn4file0</div></li>
+<li><strong>Q1.8</strong> Explain why 70% of high school girls not attending school is “scary”.<div class="answer-box" id="ans-1-8">Missing school → fall behind → may fail. (Any logical reason). fileciteturn4file0</div></li>
+<li><strong>Q1.9</strong> Opinion or fact? Substantiate with a quote.<div class="answer-box" id="ans-1-9">Fact. Quote: “Studies have shown ...”. fileciteturn4file0</div></li>
+<li><strong>Q1.10</strong> Explain what is meant by “low self-esteem”.<div class="answer-box" id="ans-1-10">Thinking you’re not good/pretty/clever enough. fileciteturn4file0</div></li>
+<li><strong>Q1.11</strong> Difference between low and high self-esteem.<div class="answer-box" id="ans-1-11">Low: think badly of yourself. High: satisfied/better than others. Difference must be clear. fileciteturn4file0</div></li>
+<li><strong>Q1.12</strong> Two characteristics of teenagers with high self-esteem.<div class="answer-box" id="ans-1-12">Feel good about image; take pride in abilities; appreciate worth (any TWO). fileciteturn4file0</div></li>
+<li><strong>Q1.13</strong> Why is there “beauty” in low self-esteem?<div class="answer-box" id="ans-1-13">Because it can be improved; teens can get help. fileciteturn4file0</div></li>
+<li><strong>Q1.14</strong> According to the author, where should change start?<div class="answer-box" id="ans-1-14">Find out what caused the problem. fileciteturn4file0</div></li>
+<li><strong>Q1.15</strong> True/False + quote: some people do not have positive characteristics.<div class="answer-box" id="ans-1-15">False. Quote: “we all have them”. fileciteturn4file0</div></li>
 
-    <div id="objOwnWords" class="dialogue-box"><span class="close-btn" onclick="toggleBox('objOwnWords')">✖</span><p>Own words = show understanding, not copying.</p></div>
-    <div id="objLowHigh" class="dialogue-box"><span class="close-btn" onclick="toggleBox('objLowHigh')">✖</span><p>Low self-esteem = you feel not good enough. High = you value yourself.</p></div>
-    <div id="objFactOpinion" class="dialogue-box"><span class="close-btn" onclick="toggleBox('objFactOpinion')">✖</span><p>Fact = provable. Opinion = belief or feeling.</p></div>
+<li><strong>Q2.1</strong> Explain why ‘Truth’ is in inverted commas.<div class="answer-box" id="ans-2-1">Implies truth is not usually found on social media. fileciteturn4file0</div></li>
+<li><strong>Q2.2</strong> Meaning of “to make a bid”.<div class="answer-box" id="ans-2-2">To make an offer to buy a business. fileciteturn4file0</div></li>
+<li><strong>Q2.3</strong> What does “Duh!” imply?<div class="answer-box" id="ans-2-3">It shows the friend thinks she is dumb. fileciteturn4file0</div></li>
+<li><strong>Q2.4</strong> ONE visual + ONE written clue showing these are teenagers.<div class="answer-box" id="ans-2-4">Visual: no wrinkles / cap. Written: informal “buddy”. fileciteturn4file0</div></li>
 
-    <div class="section">
-      <h2>⏱️ PDN (Please Do Now)</h2>
-      <p>Read the sentence:</p>
-      <p><span class="highlight-yellow" onclick="toggleBox('pdnSentenceNote')">“Magazines make most teenagers feel bad about their bodies.”</span></p>
-      <p class="hint">Decide: Fact or opinion?</p>
-      <p><a href="javascript:void(0);" class="button" onclick="toggleBox('pdnExample')">Show PDN Answer</a></p>
-    </div>
+<li><strong>Q3</strong> Summary: seven steps to get teens outside.<div class="answer-box" id="ans-3">1) Feel positive; 2) Bring friends; 3) Choose destination; 4) Do something unusual; 5) Guided adventure; 6) Make it creative; 7) Mentor younger children. fileciteturn4file0</div></li>
 
-    <div id="pdnSentenceNote" class="dialogue-box"><span class="close-btn" onclick="toggleBox('pdnSentenceNote')">✖</span><p>This links to how media affects emotions.</p></div>
-    <div id="pdnExample" class="dialogue-box"><span class="close-btn" onclick="toggleBox('pdnExample')">✖</span><p>It is an opinion; “feel bad” shows emotion.</p></div>
+<li><strong>Q4.1</strong> Why is “Adventure Therapy” capitalised?<div class="answer-box" id="ans-4-1">Proper noun → capital letter. fileciteturn4file0</div></li>
+<li><strong>Q4.2</strong> Correct the pronoun error in line 1.<div class="answer-box" id="ans-4-2">themselves. fileciteturn4file0</div></li>
+<li><strong>Q4.3</strong> Identify the Americanism + correct it.<div class="answer-box" id="ans-4-3">Analyzing → analysing. fileciteturn4file0</div></li>
+<li><strong>Q4.4</strong> “kids” is an example of …<div class="answer-box" id="ans-4-4">Informal language. fileciteturn4file0</div></li>
+<li><strong>Q4.5</strong> Reason for apostrophe in “they’ve”.<div class="answer-box" id="ans-4-5">Apostrophe replaces omitted letters. fileciteturn4file0</div></li>
+<li><strong>Q4.6</strong> Use the homophone of “heal” in a sentence.<div class="answer-box" id="ans-4-6">Example: She hurt her heel while playing netball. fileciteturn4file0</div></li>
+<li><strong>Q4.7</strong> Use life & live in sentences.<div class="answer-box" id="ans-4-7">Life = noun. Live = verb. Examples included. fileciteturn4file0</div></li>
+<li><strong>Q4.8</strong> Synonym for “adolescents”.<div class="answer-box" id="ans-4-8">Teenagers (plural). fileciteturn4file0</div></li>
+<li><strong>Q4.9</strong> Change the underlined word to a noun.<div class="answer-box" id="ans-4-9">Application. fileciteturn4file0</div></li>
+<li><strong>Q4.10</strong> Suitable preposition.<div class="answer-box" id="ans-4-10">to. fileciteturn4file0</div></li>
+<li><strong>Q4.11</strong> Identify the prefix.<div class="answer-box" id="ans-4-11">in. fileciteturn4file0</div></li>
+<li><strong>Q4.12</strong> Why “an” before “adventure-based”.<div class="answer-box" id="ans-4-12">Used before vowel sound. fileciteturn4file0</div></li>
+<li><strong>Q4.13</strong> Explain the hyphen use.<div class="answer-box" id="ans-4-13">Forms a compound adjective. fileciteturn4file0</div></li>
+<li><strong>Q4.14</strong> Antonym for “active”.<div class="answer-box" id="ans-4-14">Passive. fileciteturn4file0</div></li>
+<li><strong>Q4.15</strong> Rewrite sentence in passive voice.<div class="answer-box" id="ans-4-15">Overall health and wellness are bolstered and lifelong recovery is ignited by them. fileciteturn4file0</div></li>
+<li><strong>Q4.16</strong> Correct the concord error.<div class="answer-box" id="ans-4-16">Is → are. fileciteturn4file0</div></li>
+<li><strong>Q4.17</strong> Antonym of “powerful” using a different suffix.<div class="answer-box" id="ans-4-17">powerless. fileciteturn4file0</div></li>
+<li><strong>Q4.18</strong> Plural rewrite: ______ ____ powerful lessons.<div class="answer-box" id="ans-4-18">These are. fileciteturn4file0</div></li>
+<li><strong>Q4.19</strong> Parts of speech (5 items).<div class="answer-box" id="ans-4-19">Verb; pronoun; proper noun; preposition; common noun. fileciteturn4file0</div></li>
+<li><strong>Q4.20</strong> Word showing more than one camp.<div class="answer-box" id="ans-4-20">camps. fileciteturn4file0</li>
+<li><strong>Q4.21</strong> Sentence type.<div class="answer-box" id="ans-4-21"></div></li>
+<li><strong>Q4.22</strong> Explain answer to Q4.21.<div class="answer-box" id="ans-4-22"></div></li>
+<li><strong>Q4.23</strong> Change “United” to a noun.<div class="answer-box" id="ans-4-23"></div></li>
+<li><strong>Q4.24</strong> Correct form of the email address.<div class="answer-box" id="ans-4-24"></div></li>
 
-    <div class="section">
-      <h2>❓ Do It</h2>
-      <ol>
-        <li>In your own words, describe the effect magazines have on teen self-esteem.</li>
-        <li>List any two feelings caused by super‑thin models.</li>
-        <li>Explain <span class="highlight-yellow" onclick="toggleBox('doitLowTerm')">low self-esteem</span>.</li>
-      </ol>
-      <p><a href="javascript:void(0);" class="button" onclick="toggleBox('doitAnswers')">View Model Answers</a></p>
-    </div>
+<li><strong>Q5.1</strong> Difference between “right” and “obligation”.<div class="answer-box" id="ans-5-1"></div></li>
+<li><strong>Q5.2</strong> Complex or compound sentence?<div class="answer-box" id="ans-5-2"></div></li>
+<li><strong>Q5.3</strong> Substantiate answer.<div class="answer-box" id="ans-5-3"></div></li>
+<li><strong>Q5.4</strong> Rewrite first sentence with opposite meaning.<div class="answer-box" id="ans-5-4"></div></li>
+<li><strong>Q5.5</strong> Correct meaning of “master”.<div class="answer
+<div class="answer-box" id="memoAnswers">
+Loading memo...
+</div>
+<button class="reveal-btn" onclick="document.getElementById('teacherPass').scrollIntoView({behavior:'smooth'});">↘️ Go to Teacher Access</button>
+</div>
 
-    <div id="doitLowTerm" class="dialogue-box"><span class="close-btn" onclick="toggleBox('doitLowTerm')">✖</span><p>Low self-esteem = feeling unworthy.</p></div>
-    <div id="doitAnswers" class="dialogue-box"><span class="close-btn" onclick="toggleBox('doitAnswers')">✖</span><p><strong>1.1</strong> They have a negative effect / make them feel ugly.<br><strong>1.2</strong> They harm themselves.<br><strong>1.3</strong> Stress, depression, shame, guilt, body‑dissatisfaction (any two).<br><strong>1.10</strong> Thinking you are not good enough / pretty enough / clever enough.</p></div>
+<div class="section">
+<h2>🏠 Homework</h2>
+<p>Rewrite any <strong>three</strong> answers where your memo comparison showed weaknesses.</p>
+</div>
 
-    <div class="section">
-      <h2>📖 Do It Again</h2>
-      <p>Explain why it is “scary” that 70% of girls skip school when they feel bad about their looks.</p>
-      <p><a href="javascript:void(0);" class="button" onclick="toggleBox('againAnswers')">View Model Answers</a></p>
-    </div>
-
-    <div id="againAnswers" class="dialogue-box"><span class="close-btn" onclick="toggleBox('againAnswers')">✖</span><p><strong>1.8</strong> It is scary because missing school leads to falling behind and possibly failing.</p></div>
-
-    <div class="section">
-      <h2>📝 Independent Practice</h2>
-      <p>Write a short paragraph to a friend who feels “not good enough” because of social media images.</p>
-      <p><a href="javascript:void(0);" class="button" onclick="toggleBox('indieAnswers')">Example Paragraph</a></p>
-    </div>
-
-    <div id="indieAnswers" class="dialogue-box"><span class="close-btn" onclick="toggleBox('indieAnswers')">✖</span><p><strong>1.12</strong> Teens with high self‑esteem feel good about their physical image, take pride in abilities, appreciate their worth (any two).</p></div>
-
-  </div>
-
-<!-- Custom Password Modal -->
-<div id="pwModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9000; justify-content:center; align-items:center;">
-  <div style="background:white; padding:30px; border-radius:12px; width:350px; text-align:center; box-shadow:0 0 20px rgba(0,0,0,0.4);">
-    <h3 style="margin-top:0;">🔑 Teacher Password</h3>
-    <input id="pwInput" type="password" style="width:90%; padding:10px; border-radius:6px; border:1px solid #aaa; margin-bottom:15px;">
-    <br>
-    <button onclick="submitPW()" style="padding:10px 18px; background:#0074a8; color:white; border:none; border-radius:6px; cursor:pointer;">Unlock</button>
-    <button onclick="closePW()" style="padding:10px 18px; background:#999; color:white; border:none; border-radius:6px; cursor:pointer; margin-left:10px;">Cancel</button>
+<div class="section" id="releaseSection">
+  <h2>⏳ Answer Release Countdown</h2>
+  <div style="background:#e8f4ff;border:2px solid #0074a8;border-radius:10px;padding:10px;">
+    <span><strong>Answers release at 16:00 (SAST)</strong> — <span id="countdownClock">--:--:--</span></span>
   </div>
 </div>
 
+<div class="section">
+  <h2>🔒 Teacher Access</h2>
+  <p>Enter password to reveal memo:</p>
+  <input id="teacherPass" type="password" placeholder="Enter password" style="padding:6px;border-radius:6px;border:1px solid #777;" />
+  <button class="reveal-btn" id="teacherBtn">Reveal Now</button>
+</div>
+
+</div>
+
 <script>
-// === Chalk sound ===
-const chalkSound = new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_6d6318b1b1.mp3?filename=chalk-on-blackboard-6873.mp3");
+// Fill SAST date
+document.getElementById('dateSAST').textContent = new Date().toLocaleDateString('en-GB',{timeZone:'Africa/Johannesburg',year:'numeric',month:'long',day:'numeric'});
 
-// === Memo lock setup ===
-const releaseTime = new Date('2025-11-20T16:00:00');
-let memoUnlocked = false;
-const memoIds = ['doitAnswers','againAnswers','indieAnswers'];
+// Password unlock
+const correctPass='Joshu@2025';
+function unlock(){ document.querySelectorAll('.answer-box').forEach(b=>b.style.display='block'); }
+document.getElementById('teacherBtn').onclick=()=>{
+ if(document.getElementById('teacherPass').value===correctPass){ unlock(); }
+ else{ alert('Incorrect password'); }
+};
 
-function lockMemos() {
-  memoIds.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.dataset.locked = 'true';
-      el.style.display = 'none';
-      el.classList.remove('show');
-    }
-  });
-}
-
-function unlockMemos() {
-  memoIds.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.dataset.locked = 'false';
-    }
-  });
-  memoUnlocked = true;
-  const timer = document.getElementById('timeRemaining');
-  if (timer) timer.textContent = 'UNLOCKED';
-}
-
-function toggleBox(id) {
-  const box = document.getElementById(id);
-  if (!box) return;
-
-  const isLocked = box.dataset && box.dataset.locked === 'true';
-  if (isLocked && !memoUnlocked) {
-    alert('Answers are locked until 20 Nov 2025 at 16:00. Ask your teacher.');
-    return;
-  }
-
-  if (box.classList.contains('show')) {
-    box.classList.remove('show');
-    setTimeout(() => (box.style.display = 'none'), 500);
-  } else {
-    box.style.display = 'block';
-    setTimeout(() => box.classList.add('show'), 10);
-    chalkSound.currentTime = 0;
-    chalkSound.play().catch(() => {});
-    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-}
-
-// === Countdown timer ===
-function updateCountdown() {
-  const now = new Date();
-  const timer = document.getElementById('timeRemaining');
-  if (!timer) return;
-  if (memoUnlocked) {
-    timer.textContent = 'UNLOCKED';
-    return;
-  }
-  const diff = releaseTime - now;
-  if (diff <= 0) {
-    timer.textContent = '00:00:00';
-    return;
-  }
-  const hrs = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
-  const mins = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-  const secs = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
-  timer.textContent = `${hrs}:${mins}:${secs}`;
-}
-
-// === Time-based release check ===
-function checkRelease() {
-  const now = new Date();
-  if (!memoUnlocked && now >= releaseTime) {
-    openPW();
-  }
-}
-
-// === Teacher unlock modal ===
-function openPW() {
-  const modal = document.getElementById('pwModal');
-  if (modal) modal.style.display = 'flex';
-}
-
-function closePW() {
-  const modal = document.getElementById('pwModal');
-  const input = document.getElementById('pwInput');
-  if (modal) modal.style.display = 'none';
-  if (input) input.value = '';
-}
-
-function submitPW() {
-  const input = document.getElementById('pwInput');
-  const pw = input ? input.value : '';
-  if (pw === 'Joshu@2025') {
-    unlockMemos();
-    closePW();
-    alert('Memo unlocked for teacher.');
-  } else {
-    alert('Incorrect password');
-  }
-}
-
-function teacherBypass() {
-  openPW();
-}
-
-// === Initialise on load ===
-window.addEventListener('load', () => {
-  lockMemos();
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
-  setInterval(checkRelease, 10000);
+// Countdown
+function now(){ return new Date(new Date().toLocaleString('en-GB',{timeZone:'Africa/Johannesburg'})); }
+const release = new Date(); release.setHours(16,0,0,0);
+function tick(){ const diff = release-now(); const el=document.getElementById('countdownClock'); if(diff<=0){ unlock(); el.textContent='Released'; return;} const s=Math.floor(diff/1000); el.textContent = `${String(Math.floor(s/3600)).padStart(2,'0')}:${String(Math.floor((s%3600)/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`; }
+setInterval(tick,1000); tick();
+// Click‑to‑reveal for each answer box
+window.addEventListener('load',()=>{
+ document.querySelectorAll('#questionList li').forEach(li=>{
+   const ans=li.querySelector('.answer-box');
+   if(ans){
+     const label=li.querySelector('strong');
+     if(label){ label.classList.add('question-toggle');
+       label.onclick=()=>{
+         ans.style.display = ans.style.display==='block' ? 'none' : 'block';
+       };
+     }
+   }
+ });
 });
 </script>
+
 </body>
 </html>
