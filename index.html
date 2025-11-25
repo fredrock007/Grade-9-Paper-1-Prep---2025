@@ -13,6 +13,15 @@ p, li { font-size:16px; line-height:1.6; color:#333; }
 .text-toggle { cursor:pointer; color:#0074a8; font-weight:600; margin-top:8px; }
 .text-box { background:#f7f7f7; border:1px solid #aaa; border-radius:8px; padding:12px; height:230px; overflow-y:auto; display:none; }
 .answer-box { background:#e1ffe1; border-left:4px solid #28a745; padding:10px 14px; border-radius:6px; margin-top:6px; display:none; }
+.timer-bar{margin-top:6px;margin-bottom:10px;}
+.timer-label{font-size:14px;font-weight:600;}
+.timer-track{width:100%;height:10px;background:#eee;border-radius:999px;overflow:hidden;}
+.timer-fill{height:100%;width:100%;background:#28a745;transform-origin:left center;transform:scaleX(1);transition:transform 0.25s linear;}
+.section.active-phase{background:#fffde7;box-shadow:0 0 0 3px #ffe082 inset;}
+#confettiToast{position:fixed;top:16px;right:16px;background:#ffffff;border-radius:10px;padding:10px 14px;box-shadow:0 4px 12px rgba(0,0,0,0.25);display:none;z-index:9999;}
+#confettiToast.show{display:flex;align-items:center;gap:8px;animation:confettiFade 4s forwards;}
+#confettiToast span.emoji{font-size:24px;}
+@keyframes confettiFade{0%{opacity:1;transform:translateY(0);}80%{opacity:1;}100%{opacity:0;transform:translateY(-10px);}}
 .reveal-btn { background:#0074a8; color:white; padding:8px 14px; border:none; border-radius:6px; cursor:pointer; margin-top:12px; }
 </style>
 <style>
@@ -50,8 +59,12 @@ p, li { font-size:16px; line-height:1.6; color:#333; }
 </ol>
 </div>
 
-<div class="section">
+<div class="section" id="readingSection">
 <h2>📄 Exam Text</h2>
+<div class="timer-bar" data-phase="reading">
+  <div class="timer-label">Reading time left: <span id="readingTime">10:00</span></div>
+  <div class="timer-track"><div class="timer-fill" id="readingFill"></div></div>
+</div>
 <p>Open the Grade 9 Comprehension Exam below:</p>
 <a id="examLink" href="https://raw.githubusercontent.com/fredrock007/Grade-9-Paper-1-Prep---2025/main/ENGL%20HL%20P2%20GR9%20QP%20NOV2019%20D.pdf" target="_blank" style="display:inline-block;margin-bottom:12px;text-decoration:none;">
   <img src="https://raw.githubusercontent.com/fredrock007/placeholder/main/thumbnail.png" style="max-width:120px;width:100%;height:auto;border:2px solid #0074a8;border-radius:8px;cursor:pointer;" />
@@ -59,8 +72,12 @@ p, li { font-size:16px; line-height:1.6; color:#333; }
 <iframe id="examFrame" src="https://mozilla.github.io/pdf.js/web/viewer.html?file=https://raw.githubusercontent.com/fredrock007/Grade-9-Paper-1-Prep---2025/main/ENGL%20HL%20P2%20GR9%20QP%20NOV2019%20D.pdf" style="width:100%;height:600px;border:2px solid #0074a8;border-radius:8px;"></iframe>
 </div>
 
-<div class="section">
+<div class="section" id="doItSection">
 <h2 style="color:#d4a017;">❓ Do It — Comprehension (Q1.1–Q1.15)</h2>
+<div class="timer-bar" data-phase="doit">
+  <div class="timer-label">Do It time left: <span id="doItTime">20:00</span></div>
+  <div class="timer-track"><div class="timer-fill" id="doItFill"></div></div>
+</div>
 <ol>
 <li><strong>Q1.1</strong> Describe the effect magazines and advertising have on teenagers.<textarea class="student-answer" placeholder="Type your answer here..." style="width:100%;min-height:60px;margin-top:8px;padding:8px;border:1px solid #999;border-radius:6px;font-size:15px;resize:vertical;"></textarea>
 <div class="answer-box" class="answer-box">They negatively influence teens and lower confidence.</div></li>
@@ -97,8 +114,12 @@ p, li { font-size:16px; line-height:1.6; color:#333; }
 </ol>
 </div>
 
-<div class="section">
+<div class="section" id="doItAgainSection">
 <h2 style="color:#d63384;">📖 Do It Again — Visual (Q2.1–Q2.4)</h2>
+<div class="timer-bar" data-phase="again">
+  <div class="timer-label">Do It Again time left: <span id="doAgainTime">10:00</span></div>
+  <div class="timer-track"><div class="timer-fill" id="doAgainFill"></div></div>
+</div>
 <ol>
 <li><strong>Q2.1</strong> Explain why ‘Truth’ is in inverted commas.<textarea class="student-answer" placeholder="Type your answer here..." style="width:100%;min-height:60px;margin-top:8px;padding:8px;border:1px solid #999;border-radius:6px;font-size:15px;resize:vertical;"></textarea>
 <div class="answer-box" class="answer-box">It suggests that what people call “truth” online is not always real or reliable.</div></li>
@@ -111,8 +132,12 @@ p, li { font-size:16px; line-height:1.6; color:#333; }
 </ol>
 </div>
 
-<div class="section">
+<div class="section" id="doOneMoreSection">
 <h2 style="color:#2ca02c;">📝 Do One More Time — Summary + Language (Q3–Q5.6)</h2>
+<div class="timer-bar" data-phase="more">
+  <div class="timer-label">Do One More Time left: <span id="doMoreTime">20:00</span></div>
+  <div class="timer-track"><div class="timer-fill" id="doMoreFill"></div></div>
+</div>
 <ol>
 <li><strong>Q3</strong> Summary: seven steps to get teens outside.<textarea class="student-answer" placeholder="Type your answer here..." style="width:100%;min-height:60px;margin-top:8px;padding:8px;border:1px solid #999;border-radius:6px;font-size:15px;resize:vertical;"></textarea>
 <div class="answer-box" class="answer-box">1) Feel positive; 2) Bring friends; 3) Choose a destination; 4) Do something unusual; 5) Guided adventure; 6) Make it creative; 7) Mentor younger children.</div></li>
@@ -201,6 +226,17 @@ p, li { font-size:16px; line-height:1.6; color:#333; }
 </div>
 
 <script>
+// Confetti toast
+function showConfetti(message){
+  const toast=document.getElementById('confettiToast');
+  const msg=document.getElementById('confettiMessage');
+  if(!toast||!msg) return;
+  msg.textContent=message;
+  toast.classList.remove('show');
+  void toast.offsetWidth;
+  toast.classList.add('show');
+}
+
 // Fill SAST date
 document.getElementById('dateSAST').textContent = new Date().toLocaleDateString('en-GB',{timeZone:'Africa/Johannesburg',year:'numeric',month:'long',day:'numeric'});
 
@@ -208,8 +244,13 @@ document.getElementById('dateSAST').textContent = new Date().toLocaleDateString(
 const correctPass='Joshu@2025';
 function unlock(){ document.querySelectorAll('.answer-box').forEach(b=>b.style.display='block'); }
 document.getElementById('teacherBtn').onclick=()=>{
- if(document.getElementById('teacherPass').value===correctPass){ unlock(); }
- else{ alert('Incorrect password'); }
+ if(document.getElementById('teacherPass').value===correctPass){
+   unlock();
+   showConfetti('🎉 Memo unlocked!');
+ }
+ else{
+   alert('Incorrect password');
+ }
 };
 
 // Countdown
@@ -231,6 +272,21 @@ window.addEventListener('load',()=>{
    }
  });
 });
+
+// ---- Lesson phase timers (total 60 minutes) ----
+const lessonPhases=[
+ {key:'reading',duration:600,timeId:'readingTime',fillId:'readingFill',sectionId:'readingSection',label:'Reading the exam text'},
+ {key:'doit',duration:1200,timeId:'doItTime',fillId:'doItFill',sectionId:'doItSection',label:'Do It questions'},
+ {key:'again',duration:600,timeId:'doAgainTime',fillId:'doAgainFill',sectionId:'doItAgainSection',label:'Do It Again questions'},
+ {key:'more',duration:1200,timeId:'doMoreTime',fillId:'doMoreFill',sectionId:'doOneMoreSection',label:'Do One More Time questions'}
+];
+let currentPhaseIndex=0;
+let phaseRemaining=lessonPhases[0].duration;
+let phaseTimer=null;
+function formatSeconds(sec){const s=Math.max(0,sec);const m=Math.floor(s/60);const r=s%60;return String(m).padStart(2,'0')+':'+String(r).padStart(2,'0');}
+function updatePhaseUI(){const phase=lessonPhases[currentPhaseIndex];const tEl=document.getElementById(phase.timeId);const fEl=document.getElementById(phase.fillId);if(tEl)tEl.textContent=formatSeconds(phaseRemaining);if(fEl){const frac=phaseRemaining/phase.duration;fEl.style.transform='scaleX('+Math.max(frac,0)+')';}}
+function startPhase(index){if(index<0||index>=lessonPhases.length)return;if(phaseTimer){clearInterval(phaseTimer);}currentPhaseIndex=index;const phase=lessonPhases[index];phaseRemaining=phase.duration;document.querySelectorAll('.section').forEach(s=>s.classList.remove('active-phase'));const secEl=document.getElementById(phase.sectionId);if(secEl){secEl.classList.add('active-phase');secEl.scrollIntoView({behavior:'smooth',block:'start'});}updatePhaseUI();phaseTimer=setInterval(()=>{phaseRemaining--;if(phaseRemaining<0){clearInterval(phaseTimer);phaseTimer=null;if(currentPhaseIndex<lessonPhases.length-1){startPhase(currentPhaseIndex+1);}else{showConfetti('🎉 Lesson complete! Great work.');}}else{updatePhaseUI();}},1000);} 
+window.addEventListener('load',()=>{startPhase(0);});
 </script>
 
 
@@ -250,5 +306,6 @@ document.getElementById('downloadBtn').onclick=()=>{const doc=new jsPDF();let y=
 function getKeywords(text){return text.toLowerCase().split(/[^a-z]+/).filter(w=>w.length>4);} 
 document.getElementById('feedbackBtn').onclick=()=>{let fb="";document.querySelectorAll('ol li').forEach(li=>{const q=li.querySelector('strong')?.textContent;const stu=li.querySelector('.student-answer')?.value.toLowerCase();const memo=li.querySelector('.answer-box')?.textContent.toLowerCase();if(stu){const sk=getKeywords(stu);const mk=getKeywords(memo);const miss=mk.filter(k=>!sk.includes(k));fb+=`<p><strong>${q}</strong>: Missing keywords → ${miss.slice(0,3).join(', ')||'Good!'}</p>`;} });document.getElementById('feedbackBox').innerHTML=fb;document.getElementById('feedbackBox').style.display='block';};
 </script>
+<div id="confettiToast"><span class="emoji">🎉</span><span id="confettiMessage">Lesson complete!</span></div>
 </body>
 </html>
