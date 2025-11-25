@@ -18,8 +18,13 @@ p, li { font-size:16px; line-height:1.6; color:#333; }
 .timer-track{width:100%;height:10px;background:#eee;border-radius:999px;overflow:hidden;}
 .timer-fill{height:100%;width:100%;background:#28a745;transform-origin:left center;transform:scaleX(1);transition:transform 0.25s linear;}
 .section.active-phase{background:#fffde7;box-shadow:0 0 0 3px #ffe082 inset;}
-#confettiToast{position:fixed;top:16px;right:16px;background:#ffffff;border-radius:10px;padding:10px 14px;box-shadow:0 4px 12px rgba(0,0,0,0.25);display:none;z-index:9999;}
-#confettiToast.show{display:flex;align-items:center;gap:8px;animation:confettiFade 4s forwards;}
+#confettiCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;}
+/* Timer colours */
+[data-phase="reading"] .timer-fill{background:#0074a8;}
+[data-phase="doit"] .timer-fill{background:#d4a017;}
+[data-phase="again"] .timer-fill{background:#d63384;}
+[data-phase="more"] .timer-fill{background:#2ca02c;}
+ /* Remove old toast */
 #confettiToast span.emoji{font-size:24px;}
 @keyframes confettiFade{0%{opacity:1;transform:translateY(0);}80%{opacity:1;}100%{opacity:0;transform:translateY(-10px);}}
 .reveal-btn { background:#0074a8; color:white; padding:8px 14px; border:none; border-radius:6px; cursor:pointer; margin-top:12px; }
@@ -227,15 +232,23 @@ p, li { font-size:16px; line-height:1.6; color:#333; }
 
 <script>
 // Confetti toast
-function showConfetti(message){
-  const toast=document.getElementById('confettiToast');
-  const msg=document.getElementById('confettiMessage');
-  if(!toast||!msg) return;
-  msg.textContent=message;
-  toast.classList.remove('show');
-  void toast.offsetWidth;
-  toast.classList.add('show');
+function showConfetti(){
+  const confetti=document.getElementById('confettiCanvas');
+  const ctx=confetti.getContext('2d');
+  confetti.width=window.innerWidth;
+  confetti.height=window.innerHeight;
+  let pieces=[];
+  for(let i=0;i<150;i++){
+    pieces.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight*Math.random(),w:6,h:10,color:`hsl(${Math.random()*360},100%,50%)`,speed:2+Math.random()*3});
+  }
+  function update(){ctx.clearRect(0,0,innerWidth,innerHeight);
+    pieces.forEach(p=>{p.y+=p.speed; if(p.y>innerHeight) p.y=-10; ctx.fillStyle=p.color; ctx.fillRect(p.x,p.y,p.w,p.h);});
+    requestAnimationFrame(update);
+  }
+  update();
+  setTimeout(()=>{ctx.clearRect(0,0,innerWidth,innerHeight);},3000);
 }
+
 
 // Fill SAST date
 document.getElementById('dateSAST').textContent = new Date().toLocaleDateString('en-GB',{timeZone:'Africa/Johannesburg',year:'numeric',month:'long',day:'numeric'});
@@ -246,7 +259,7 @@ function unlock(){ document.querySelectorAll('.answer-box').forEach(b=>b.style.d
 document.getElementById('teacherBtn').onclick=()=>{
  if(document.getElementById('teacherPass').value===correctPass){
    unlock();
-   showConfetti('🎉 Memo unlocked!');
+   new Audio('https://actions.google.com/sounds/v1/cartoon/pop.ogg').play(); showConfetti();
  }
  else{
    alert('Incorrect password');
@@ -285,7 +298,7 @@ let phaseRemaining=lessonPhases[0].duration;
 let phaseTimer=null;
 function formatSeconds(sec){const s=Math.max(0,sec);const m=Math.floor(s/60);const r=s%60;return String(m).padStart(2,'0')+':'+String(r).padStart(2,'0');}
 function updatePhaseUI(){const phase=lessonPhases[currentPhaseIndex];const tEl=document.getElementById(phase.timeId);const fEl=document.getElementById(phase.fillId);if(tEl)tEl.textContent=formatSeconds(phaseRemaining);if(fEl){const frac=phaseRemaining/phase.duration;fEl.style.transform='scaleX('+Math.max(frac,0)+')';}}
-function startPhase(index){if(index<0||index>=lessonPhases.length)return;if(phaseTimer){clearInterval(phaseTimer);}currentPhaseIndex=index;const phase=lessonPhases[index];phaseRemaining=phase.duration;document.querySelectorAll('.section').forEach(s=>s.classList.remove('active-phase'));const secEl=document.getElementById(phase.sectionId);if(secEl){secEl.classList.add('active-phase');secEl.scrollIntoView({behavior:'smooth',block:'start'});}updatePhaseUI();phaseTimer=setInterval(()=>{phaseRemaining--;if(phaseRemaining<0){clearInterval(phaseTimer);phaseTimer=null;if(currentPhaseIndex<lessonPhases.length-1){startPhase(currentPhaseIndex+1);}else{showConfetti('🎉 Lesson complete! Great work.');}}else{updatePhaseUI();}},1000);} 
+function startPhase(index){if(index<0||index>=lessonPhases.length)return;if(phaseTimer){clearInterval(phaseTimer);}currentPhaseIndex=index;const phase=lessonPhases[index];phaseRemaining=phase.duration;document.querySelectorAll('.section').forEach(s=>s.classList.remove('active-phase'));const secEl=document.getElementById(phase.sectionId);if(secEl){secEl.classList.add('active-phase');secEl.scrollIntoView({behavior:'smooth',block:'start'});}updatePhaseUI();phaseTimer=setInterval(()=>{phaseRemaining--;if(phaseRemaining<0){clearInterval(phaseTimer);phaseTimer=null;if(currentPhaseIndex<lessonPhases.length-1){new Audio('https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg').play(); startPhase(currentPhaseIndex+1);}else{new Audio('https://actions.google.com/sounds/v1/cartoon/concussive_hit_guitar_boing.ogg').play(); showConfetti();}}else{updatePhaseUI();}},1000);} 
 window.addEventListener('load',()=>{startPhase(0);});
 </script>
 
@@ -307,5 +320,6 @@ function getKeywords(text){return text.toLowerCase().split(/[^a-z]+/).filter(w=>
 document.getElementById('feedbackBtn').onclick=()=>{let fb="";document.querySelectorAll('ol li').forEach(li=>{const q=li.querySelector('strong')?.textContent;const stu=li.querySelector('.student-answer')?.value.toLowerCase();const memo=li.querySelector('.answer-box')?.textContent.toLowerCase();if(stu){const sk=getKeywords(stu);const mk=getKeywords(memo);const miss=mk.filter(k=>!sk.includes(k));fb+=`<p><strong>${q}</strong>: Missing keywords → ${miss.slice(0,3).join(', ')||'Good!'}</p>`;} });document.getElementById('feedbackBox').innerHTML=fb;document.getElementById('feedbackBox').style.display='block';};
 </script>
 <div id="confettiToast"><span class="emoji">🎉</span><span id="confettiMessage">Lesson complete!</span></div>
+<canvas id="confettiCanvas"></canvas>
 </body>
 </html>
